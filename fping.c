@@ -102,7 +102,6 @@ void print_statistics(struct ping_stats *stats)
            stats->min_rtt, avg_rtt, stats->max_rtt, jitter);
 }
 
-// Add this prototype before the send_ping function
 uint16_t compute_checksum(uint16_t *addr, int len);
 
 void print_verbose_header(struct iphdr *iph, struct icmphdr *icmph)
@@ -149,7 +148,6 @@ void send_ping(int sockfd, struct ping_target *target)
     }
 }
 
-// Replace the empty implementation with a proper checksum calculation
 uint16_t compute_checksum(uint16_t *addr, int len)
 {
     uint32_t sum = 0;
@@ -218,7 +216,7 @@ void receive_ping(int sockfd)
             if (sender.sin_addr.s_addr == targets[i].addr.sin_addr.s_addr)
             {
                 struct timeval *tv_sent = (struct timeval *)(buffer + (iph->ihl << 2) + sizeof(struct icmphdr));
-                gettimeofday(&tv_now, NULL); // Move this here to ensure accurate timing
+                gettimeofday(&tv_now, NULL); 
                 double rtt = (tv_now.tv_sec - tv_sent->tv_sec) * 1000.0 +
                              (tv_now.tv_usec - tv_sent->tv_usec) / 1000.0;
 
@@ -342,7 +340,6 @@ int main(int argc, char *argv[])
             send_ping(sockfd, &targets[i]);
         }
 
-        // Modified select timeout for more responsive Ctrl+C
         FD_ZERO(&read_fds);
         FD_SET(sockfd, &read_fds);
         timeout.tv_sec = 0;
