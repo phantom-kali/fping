@@ -1,0 +1,98 @@
+.TH PING 1 "2024" "Custom Ping Utility" "User Commands"
+.SH NAME
+ping \- send ICMP ECHO_REQUEST packets to network hosts
+.SH SYNOPSIS
+.B ping
+[\fB\-v\fR]
+[\fB\-q\fR]
+[\fB\-d\fR]
+[\fB\-s\fR \fIpacket_size\fR]
+[\fB\-t\fR \fItimeout\fR]
+\fIhostname\fR [\fIhostname2\fR ...]
+.SH DESCRIPTION
+.B ping
+uses the ICMP protocol's mandatory ECHO_REQUEST datagram to elicit an ICMP ECHO_RESPONSE from a host or gateway.
+.PP
+This enhanced version supports multiple targets, configurable packet sizes, and various display options.
+.SH OPTIONS
+.TP
+.BR \-v
+Verbose output. Shows detailed IP and ICMP header information for each packet.
+.TP
+.BR \-q
+Quiet output. Shows nothing except final statistics when finished.
+.TP
+.BR \-d
+Show DNS resolution. Displays both hostname and IP address when pinging.
+.TP
+.BI \-s " packet_size"
+Specifies the number of data bytes to be sent. Default is 56, which translates to 64 ICMP data bytes when combined with the 8 bytes of ICMP header data.
+The minimum size is 8 bytes and maximum is 65527 bytes.
+.TP
+.BI \-t " timeout"
+Specify a timeout, in milliseconds, before ping exits regardless of how many packets have been sent or received.
+Value must be between 100 and 60000 milliseconds.
+.SH OUTPUT
+For each ECHO_REQUEST sent, one of the following will be displayed:
+.PP
+.nf
+Normal output:
+64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.123 ms
+
+Verbose output (-v):
+IP Header:
+Version: 4, IHL: 5, TOS: 0
+Total Length: 84, ID: 12345
+TTL: 64, Protocol: 1
+ICMP Header:
+Type: 0 (Echo Reply), Code: 0
+Checksum: 0x1234
+
+DNS info (-d):
+Pinging example.com [93.184.216.34]
+.fi
+.SH STATISTICS
+When finished, statistics are displayed:
+.PP
+.nf
+--- Ping statistics ---
+5 packets transmitted, 4 received, 20% packet loss
+rtt min/avg/max/mdev = 15.632/17.291/20.910/1.629 ms
+.fi
+.PP
+Statistics include:
+.IP \[bu] 2
+Packet loss percentage
+.IP \[bu]
+Minimum round-trip time
+.IP \[bu]
+Average round-trip time
+.IP \[bu]
+Maximum round-trip time
+.IP \[bu]
+Mean deviation (jitter)
+.SH EXAMPLES
+.TP
+Simple ping to a single host:
+.B ping google.com
+.TP
+Verbose ping with custom packet size:
+.B ping -v -s 100 google.com
+.TP
+Quiet ping to multiple hosts:
+.B ping -q google.com facebook.com
+.TP
+Ping with DNS info and custom timeout:
+.B ping -d -t 2000 google.com
+.SH EXIT STATUS
+Returns 0 on normal operation, non-zero on error.
+.SH NOTES
+This program must be run with root privileges to create raw sockets.
+.SH SEE ALSO
+.BR ping (8),
+.BR ping6 (8),
+.BR traceroute (8)
+.SH BUGS
+Report bugs to your system administrator.
+.SH AUTHOR
+Custom implementation of the ping utility.
