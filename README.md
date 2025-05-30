@@ -14,7 +14,7 @@ A feature-rich ping utility with support for multiple targets, statistics, and v
 
 ## Building from Source
 
-### Linux
+### Debian Linux
 
 1. Install required dependencies:
 ```bash
